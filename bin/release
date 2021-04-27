@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+
+cat <<EOF
+addons:
+  - postgresql
+config_vars:
+  PATH: /app/bin:/usr/local/bin:/usr/bin:/bin
+default_process_types:
+  web: /app/boot.sh
+EOF

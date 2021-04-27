@@ -1,0 +1,64 @@
+#!/bin/bash
+
+set -e
+
+BUILD_DIR=${1:-}
+CACHE_DIR=${2:-}
+ENV_DIR=${3:-}
+basedir="$( cd -P "$( dirname "$0" )" && pwd )"
+BUILDPACK_DIR="$(readlink -f ${basedir}/..)"
+source ${BUILDPACK_DIR}/lib/common.sh
+
+if [ -n "$BUILDPACK_DEBUG" ]; then
+  set -x
+fi
+
+PROMSCALE_VERSION="${PROMSCALE_VERSION:-0.3.0}"
+
+install_promscale() {
+  local BUILD_DIR=${1}
+  local CACHE_DIR=${2}
+
+  promscale_executable="promscale_${PROMSCALE_VERSION}_Linux_x86_64"
+  promscale_checksums="checksums.txt"
+  promscale_url="https://github.com/timescale/promscale/releases/download/${PROMSCALE_VERSION}"
+
+  if [[ -f "$CACHE_DIR/.promscale_version" ]]; then
+    old_version=$(cat $CACHE_DIR/.promscale_version)
+    if [[ $old_version != $PROMSCALE_VERSION ]]; then
+      echo "New Promscale version installation, cleaning the cache for the old version"
+      rm -f $CACHE_DIR/promscale ${CACHE_DIR}/${promscale_executable}.sha256
+    fi
+  fi
+
+  if [[ ! -f "$CACHE_DIR/promscale" ]]; then
+    echo -n "Downloading the Promscale ${PROMSCALE_VERSION} executable..."
+    curl --silent --fail --location --retry 3 --retry-delay 2 --connect-timeout 3 --max-time 30 --output ${CACHE_DIR}/promscale "${promscale_url}/${promscale_executable}"
+    echo " done"
+    echo $PROMSCALE_VERSION > ${CACHE_DIR}/.promscale_version
+  else
+    echo "Get the Promscale ${PROMSCALE_VERSION} executable from the cache"
+  fi
+
+  echo -n "Checking Promscale executable checksum..."
+  curl --silent --fail --location --retry 3 --retry-delay 2 --connect-timeout 3 --max-time 30 --output ${CACHE_DIR}/${promscale_executable}.sha256 "${promscale_url}/${promscale_checksums}"
+  if [[ $(sha256sum ${CACHE_DIR}/promscale | cut -f 1 -d " ") != $(cat ${CACHE_DIR}/${promscale_executable}.sha256 | grep $promscale_executable | cut -f 1 -d " ") ]]; then
+    echo 2>&1 "Wrong checksum"
+    return 1
+  fi
+  echo " ok"
+
+  mkdir -p ${BUILD_DIR}/bin
+  cp ${CACHE_DIR}/promscale ${BUILD_DIR}/bin
+  chmod +x ${BUILD_DIR}/bin/promscale
+
+  echo -n "Copying the vendored scripts from the buildpack..."
+  cp ${BUILDPACK_DIR}/opt/boot.sh ${BUILD_DIR}
+  chmod +x ${BUILD_DIR}/boot.sh
+  echo " done"
+}
+
+mkdir -p $CACHE_DIR
+export_env_dir "$ENV_DIR"
+
+install_promscale ${BUILD_DIR} ${CACHE_DIR}

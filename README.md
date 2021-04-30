@@ -37,6 +37,10 @@ FATAL: remaining connection slots are reserved for non-replication superuser con
 
 Define the environment variable `PROMSCALE_DB_CONNECTIONS_MAX` to limit the amount of connections used by Promscale.
 
+### PostgreSQL Extensions
+
+Promscale requires the TimescaleDB extension to work. It is also possible to install a [Promscale extension](https://github.com/timescale/promscale_extension) to improve the performance. Thos can't be enabled by `promscale_user`. Hence, disable them on Promscale by setting these environment variables: `PROMSCALE_INSTALL_EXTENSIONS=false` and `PROMSCALE_UPGRADE_EXTENSIONS=false`.
+
 ## Defining the Version
 
 By default we're installing the version of Promscale declared in the [`bin/compile`](https://github.com/Scalingo/promscale-buildpack/blob/master/bin/compile#L16) file. But if you want to use a specific version, you can define the environment variable `PROMSCALE_VERSION`.

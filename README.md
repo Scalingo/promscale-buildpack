@@ -6,21 +6,12 @@ This buildpack aims at deploying a Promscale instance on the [Scalingo](https://
 
 ### TimescaleDB
 
-The buildpack is expecting a PostgreSQL database with TimescaleDB enabled. TimescaleDB must be manually enabled on the database by an operator on the database administration panel. The credentials to connect to the database must be defined in the environment variable `PROMSCALE_DB_URI`. The default Scalingo user does not work for Promscale. You should use the user `promscale_user` as defined below. The SQL query requires a md5 hashed password with the following command:
+The buildpack is expecting a PostgreSQL database with TimescaleDB enabled. TimescaleDB must be manually enabled on the database by an operator on the database administration panel.
 
-```bash
-DB_PASSWORD="mon mot de passe"
-echo -n "${DB_PASSWORD}promscale_user" | md5sum | cut -d' ' -f1
-```
-
-Create and configure the Promscale user with the following commands. Replace `$HASHED_PASSWORD` with the output of the above command.
+The credentials to connect to the database must be defined in the environment variable `SCALINGO_POSTGRESQL_URL`. The default Scalingo user does not work out of the box for Promscale. You should add it the privilege `CREATEROLE`. The SQL query, by replacing `username` with the actual username, is:
 
 ```sql
-CREATE ROLE promscale_user LOGIN NOSUPERUSER NOCREATEDB CREATEROLE;
-ALTER ROLE promscale_user ENCRYPTED PASSWORD 'md5$HASHED_PASSWORD';
-
-CREATE DATABASE promscale_database ENCODING UTF8 LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8' TEMPLATE template0 OWNER promscale_user;
-GRANT ALL PRIVILEGES ON DATABASE promscale_database TO promscale_user;
+ALTER ROLE username WITH CREATEROLE;
 ```
 
 ### Basic Authentication
@@ -39,7 +30,7 @@ Define the environment variable `PROMSCALE_DB_CONNECTIONS_MAX` to limit the amou
 
 ### PostgreSQL Extensions
 
-Promscale requires the TimescaleDB extension to work. It is also possible to install a [Promscale extension](https://github.com/timescale/promscale_extension) to improve the performance. Thos can't be enabled by `promscale_user`. Hence, disable them on Promscale by setting these environment variables: `PROMSCALE_INSTALL_EXTENSIONS=false` and `PROMSCALE_UPGRADE_EXTENSIONS=false`.
+Promscale requires the TimescaleDB extension to work. It is also possible to install a [Promscale extension](https://github.com/timescale/promscale_extension) to improve the performance. Those can't be enabled by the default PostgreSQL user. Hence, disable them on Promscale by setting these environment variables: `PROMSCALE_INSTALL_EXTENSIONS=false` and `PROMSCALE_UPGRADE_EXTENSIONS=false`.
 
 ## Defining the Version
 

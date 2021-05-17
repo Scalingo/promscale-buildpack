@@ -4,10 +4,11 @@ if [ -n "$DEBUG" ]; then
   set -x
 fi
 
-if [[ -z "$PROMSCALE_DB_URI" ]]; then
-  echo >&2 "The environment variable PROMSCALE_DB_URI containing the *admin* credentials must be set"
+if [[ -z "$SCALINGO_POSTGRESQL_URL" ]]; then
+  echo >&2 "The environment variable SCALINGO_POSTGRESQL_URL must be set. The default user should be updated with the CREATEROLE privilege."
   exit -1
 fi
+export PROMSCALE_DB_URI=$SCALINGO_POSTGRESQL_URL
 
 if [[ -z "$PROMSCALE_AUTH_USERNAME" ]] || [[ -z "$PROMSCALE_AUTH_PASSWORD" ]]; then
   echo >&2 "The environment variables PROMSCALE_AUTH_USERNAME and PROMSCALE_AUTH_PASSWORD are mandatory to configure the Basic Auth"

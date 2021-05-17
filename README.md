@@ -14,6 +14,8 @@ The credentials to connect to the database must be defined in the environment va
 ALTER ROLE username WITH CREATEROLE;
 ```
 
+This is also mandatory to update the connection string in the environment variable `SCALINGO_POSTGRESQL_URL`. The SSL mode **must** be `require`.
+
 ### Basic Authentication
 
 This buildpack makes it mandatory to enable a Basic Auth protection. The application must define the `PROMSCALE_AUTH_USERNAME` and `PROMSCALE_AUTH_PASSWORD` environment variables with the credentials.

@@ -6,7 +6,7 @@ This buildpack aims at deploying a Promscale instance on the [Scalingo](https://
 
 ### TimescaleDB
 
-The buildpack is expecting a PostgreSQL database with TimescaleDB enabled. TimescaleDB must be manually enabled on the database by an operator on the database administration panel.
+The buildpack is expecting a PostgreSQL database with TimescaleDB Community Edition enabled. TimescaleDB Community Edition must be manually enabled on the database by an operator on the database administration panel.
 
 The credentials to connect to the database must be defined in the environment variable `SCALINGO_POSTGRESQL_URL`. The default Scalingo user does not work out of the box for Promscale. You should add it the privilege `CREATEROLE`. The SQL query, by replacing `username` with the actual username, is:
 

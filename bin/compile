@@ -13,7 +13,7 @@ if [ -n "$BUILDPACK_DEBUG" ]; then
   set -x
 fi
 
-PROMSCALE_VERSION="${PROMSCALE_VERSION:-0.4.0}"
+PROMSCALE_VERSION="${PROMSCALE_VERSION:-0.10.0}"
 
 install_promscale() {
   local BUILD_DIR=${1}

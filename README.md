@@ -39,5 +39,5 @@ Promscale requires the TimescaleDB extension to work. It is also possible to ins
 By default we're installing the version of Promscale declared in the [`bin/compile`](https://github.com/Scalingo/promscale-buildpack/blob/master/bin/compile#L16) file. But if you want to use a specific version, you can define the environment variable `PROMSCALE_VERSION`.
 
 ```shell
-$ scalingo env-set PROMSCALE_VERSION=0.3.0
+scalingo env-set PROMSCALE_VERSION=0.10.0
 ```

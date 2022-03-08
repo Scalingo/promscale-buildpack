@@ -42,8 +42,8 @@ install_promscale() {
 
   echo -n "Checking Promscale executable checksum..."
   curl --silent --fail --location --retry 3 --retry-delay 2 --connect-timeout 3 --max-time 30 --output ${CACHE_DIR}/${promscale_executable}.sha256 "${promscale_url}/${promscale_checksums}"
-  if [[ $(sha256sum ${CACHE_DIR}/promscale | cut -f 1 -d " ") != $(cat ${CACHE_DIR}/${promscale_executable}.sha256 | grep $promscale_executable | cut -f 1 -d " ") ]]; then
-    echo 2>&1 "Wrong checksum"
+  if [[ $(sha256sum ${CACHE_DIR}/promscale | cut -f 1 -d " ") != $(cat ${CACHE_DIR}/${promscale_executable}.sha256 | grep "$promscale_executable$" | cut -f 1 -d " ") ]]; then
+    echo 2>&1 " Wrong checksum"
     return 1
   fi
   echo " ok"

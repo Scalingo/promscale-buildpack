@@ -16,6 +16,12 @@ ALTER ROLE username WITH CREATEROLE;
 
 This is also mandatory to update the connection string in the environment variable `SCALINGO_POSTGRESQL_URL`. The SSL mode **must** be `require`.
 
+After the initial start of Promscale, it is safe to remove the `CREATEROLE` attribute:
+
+```sql
+ALTER ROLE username WITH NOCREATEROLE;
+```
+
 ### Basic Authentication
 
 This buildpack makes it mandatory to enable a Basic Auth protection. The application must define the `PROMSCALE_WEB_AUTH_USERNAME` and `PROMSCALE_WEB_AUTH_PASSWORD` environment variables with the credentials.

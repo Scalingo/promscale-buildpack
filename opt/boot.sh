@@ -15,4 +15,4 @@ if [[ -z "$PROMSCALE_WEB_AUTH_USERNAME" ]] || [[ -z "$PROMSCALE_WEB_AUTH_PASSWOR
   exit -1
 fi
 
-/app/bin/promscale -web-listen-address=0.0.0.0:$PORT
+/app/bin/promscale -web.listen-address=0.0.0.0:$PORT

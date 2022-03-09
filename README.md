@@ -41,3 +41,13 @@ By default we're installing the version of Promscale declared in the [`bin/compi
 ```shell
 scalingo env-set PROMSCALE_VERSION=0.10.0
 ```
+
+## Upgrade
+
+Upgrading Promscale may require to execute a migration script on the database. In this case, you may face the error:
+
+```
+Failed to acquire the migration lock to upgrade the schema version and unable to run with the old version. Please ensure that no other Promscale connectors with the old schema version are running.
+```
+
+To fix this issue, you first need to scale the Promscale application down to 0 container, then deploy the new version, and last scale the Promscale back up.

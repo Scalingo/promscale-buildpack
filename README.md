@@ -32,7 +32,7 @@ Define the environment variable `PROMSCALE_DB_CONNECTIONS_MAX` to limit the amou
 
 ### PostgreSQL Extensions
 
-Promscale requires the TimescaleDB extension to work. It is also possible to install a [Promscale extension](https://github.com/timescale/promscale_extension) to improve the performance. Those can't be enabled by the default PostgreSQL user. Hence, disable them on Promscale by setting these environment variables: `PROMSCALE_INSTALL_EXTENSIONS=false` and `PROMSCALE_UPGRADE_EXTENSIONS=false`.
+Promscale requires the TimescaleDB extension to work. It is also possible to install a [Promscale extension](https://github.com/timescale/promscale_extension) to improve the performance. Those can't be enabled by the default PostgreSQL user. Hence, disable them on Promscale by setting these environment variables: `PROMSCALE_STARTUP_INSTALL_EXTENSIONS=false` and `PROMSCALE_STARTUP_UPGRADE_EXTENSIONS=false`.
 
 ## Defining the Version
 

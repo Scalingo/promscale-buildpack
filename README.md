@@ -1,3 +1,8 @@
+> [!IMPORTANT]
+> Promscale being discontinued, deprecated and archived since Apr 2, 2024,
+> we decided to also deprecate this buildpack. It won't get any update anymore.
+
+
 # Scalingo Promscale Buildpack
 
 This buildpack aims at deploying a Promscale instance on the [Scalingo](https://scalingo.com/) PaaS platform.
